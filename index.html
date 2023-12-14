@@ -1,65 +1,95 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Himanshu Solver</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Occurrence Counter</title>
+    <style>
+	
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0000007d;
+    margin: 0;
+    height: 96vh;
+}
+.container-result{
+    padding: 20px;
+	display:block;
+	background-color: #f4f4f4;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+	margin-top:20px;
+	height:40vh;
 
-<body style="margin-left:100px">
- <h1 style="color:blue;">Himanshu Solver<h1>
-<textarea class="inputData" name="w3review" rows="4" cols="50"></textarea></br></br>
-<button onclick="solveThis()" style="padding:12px 30px;color:white;background-color:blue;border-radius:6px;border:1px solid red">Solve</button></br></br>
-<span id="result"> Result : </span>
+}
+.result{
+margin-left:45%;
+}
+.container-field {
+    text-align: center;
+	background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+	background-color:blue;
+	color:white;
+}
+	</style>
+</head>
+<body>
+    <div class="container-field">
+        <h1 style="color:green">Number Occurrence Counter</h1>
+		<hr>
+        <div for="numberArray" style="font-size:20px">Enter numbers (space-separated):</div><hr>
+		<textarea type="number" id="numberArray" placeholder="e.g., 11 22 33" ></textarea>
+        
+        <div><button onclick="countOccurrences()">Count Occurrences</button></div>
+    
+    </div>
+	  <div class="container-result">
+	  <h1>Result</h1>
+	  <div id="result"></div> 
+    </div>
 </body>
 <script>
-function solveThis(){
-var str = document.querySelector(".inputData").value;
-var temp = new Array();
-temp = str.split(",");
-let numberArray = temp.map(el=>parseInt(el));
-GetValue(numberArray)
-}
-/*function removeItem(numberArray, item) {
-  for(i = 0; i<numberArray.length; i++){
-    if(numberArray[i] == item) {
-     numberArray.splice(numberArray.indexOf(item), 1);
-    }	
-  }
-}*/
 
-function GetValue(numberArray){ debugger
+function countOccurrences() {
+    const inputElement = document.getElementById('numberArray');
+    const resultElement = document.getElementById('result');
+	
+    const numbers = inputElement.value.split(' ').map(Number);
+    const occurrences = {};
 
-if(numberArray.length == 0)
-        console.log(null);
-		while(numberArray.length != 0){
-    var modeMap = {};
-    var maxEl = numberArray[0], maxCount = 1;
-    for(var i = 0; i < numberArray.length; i++)
-    {
-        var el = numberArray[i];
-        if(modeMap[el] == null)
-            modeMap[el] = 1;
-        else
-            modeMap[el]++;  
-        if(modeMap[el] > maxCount)
-        {
-            maxEl = el;
-            maxCount = modeMap[el];
-        }
+    numbers.forEach(number => {
+        occurrences[number] = (occurrences[number] || 0) + 1;
+    });
+	
+	const sortedEntries = Object.entries(occurrences).sort((a , b)=> b[1] - a[1]);
+
+    let resultHTML = '<h2>Occurrences:</h2>';
+	let currentCount = null;
+	   for (const [number, count] of sortedEntries) {
+	   if(count !== currentCount){
+	   if( currentCount !== null){
+	    resultHTML += '</p>';
+	   }
+       resultHTML += `<p><strong>${count} :: </strong>`;	
+       currentCount = count;	   
     }
-document.getElementById("result").innerHTML = document.getElementById("result").innerText +" "+maxCount +" - "+ numberArray+',  ';
-for(var item in numberArray){
-if(item == numberArray){
-array.remove(maxEl);
-}
-}
-
+        resultHTML += `${number} `;
+    }
+	
+    resultElement.innerHTML = resultHTML +'<br>';
 }
 
-}
+
+
 </script>
+
 </html>
